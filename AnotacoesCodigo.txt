@@ -1,0 +1,56 @@
+
+O annotation @RunWith(SpringRunner.class) -> faz uma ponte entre os recursos do JUnit e SpringBoot, geralmente é utilizada na classe de teste.
+
+
+A annotation @TestConfiguration -> É utilizada apenas nas classes de configuração do Teste para não confundir com o código sem o teste.
+
+A annotation @Test -> Informa que é um metodo de teste
+
+A annotation @Before -> indica que o metodo será utilizado antes de qualquer coisa.
+
+@MockBean
+BookingRepository bookingRepository 
+
+No @MockBean significa que sempre que for necessário uma instancia de bookingRepository ele vai simular.
+
+Exemplo abaixo:
+
+@Before
+	public void setup() {
+		LocalDate checkIn = LocalDate.parse("2020-11-10");
+		LocalDate checkOut = LocalDate.parse("2020-11-20");
+		
+		BookingModel bookingModel = new BookingModel("1", "Marcelo", checkIn, checkOut, 5);
+		
+		//Utiliza a instancia do bookingRepository no Mockito
+		Mockito.when(bookingRepository.findByReserveName(bookingModel.getReserveName()))
+		        .thenReturn(java.util.Optional.of(bookingModel)); 
+	}
+
+
+================================================================================
+
+Classe de configuração @TestConfiguration para deixar um @Bean disponivel de bookingService
+
+
+@TestConfiguration
+	static class BookingServiceTestConfiguration{
+
+            @Bean
+		public BookingService bookingService() {
+			return new BookingService();
+		}
+	}
+
+
+=============================================================================
+
+Object Mapper transforma um objeto em JSON
+
+@Autowired
+private ObjectMapper objectMapper;
+
+
+============================================================================
+
+O MockMvc está sendo utilizado no Controller para chamar os endpoints 
